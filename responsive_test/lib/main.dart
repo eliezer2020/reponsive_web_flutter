@@ -15,9 +15,9 @@ class MyApp extends StatelessWidget {
   }
 }
 
-const kTabletBreakpoint = 720.0;
-const kDesktopBreakpoint = 1220.0;
-const kMaxContentWidth = 1070.0;
+
+const kDesktopBreakpoint = 1024.0;
+
 
 class DashboardHome extends StatefulWidget {
   @override
@@ -31,21 +31,21 @@ class _DashboardHomeState extends State<DashboardHome> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (_, dimens) => Scaffold(
-        drawer: dimens.maxWidth <= kDesktopBreakpoint ? buildDrawer() : null,
-        appBar: dimens.maxWidth <= kTabletBreakpoint ? buildDeskAppBar() : null,
+        drawer: dimens.maxWidth < kDesktopBreakpoint ? buildDrawer() : null,
+        appBar:  buildDeskAppBar(),
         body: Row(
           children: <Widget>[
             if (dimens.maxWidth >= kDesktopBreakpoint) buildDrawer(0),
             Expanded(
                 child: Column(
               children: <Widget>[
-                if (dimens.maxWidth >= kTabletBreakpoint) buildDeskAppBar(),
+                
                 Expanded(
                   child: Container(
                     child: Center(
                       child: Container(
                         alignment: Alignment.topCenter,
-                        width: kMaxContentWidth,
+                        
                         child: buildBody(dimens.maxWidth),
                       ),
                     ),
@@ -60,37 +60,44 @@ class _DashboardHomeState extends State<DashboardHome> {
   }
 
   Widget buildBody(double width) {
-    double elevation = 2;
-    if (width >= kMaxContentWidth) {
-      width = kMaxContentWidth;
-    }
+    double elevation = 10;
+  
     return SingleChildScrollView(
       child: Wrap(
         alignment: WrapAlignment.start,
         crossAxisAlignment: WrapCrossAlignment.start,
-        runSpacing: 12,
-        spacing: 12,
+        runSpacing: 13,
+        spacing: 13,
         children: <Widget>[
           Card(
             elevation: elevation,
             child: Container(
+              color: Colors.indigo,
               height: 250.0,
+              //take all X space
+             // width: double.infinity,
             ),
           ),
+         
           Card(
-            elevation: elevation,
-            child: Container(
-              height: 600,
-              width: (width * 0.7) - 24,
+              elevation: elevation,
+              child: Container(
+                color: Colors.pink,
+                height: 300,
+                width: 362,
+              ),
             ),
-          ),
-          Card(
+
+             Card(
             elevation: elevation,
             child: Container(
+              color: Colors.purple,
+              width: 362,
               height: 300,
-              width: (width * 0.3) - 4,
+              
             ),
           ),
+          
         ],
       ),
     );
@@ -98,9 +105,11 @@ class _DashboardHomeState extends State<DashboardHome> {
 
   AppBar buildDeskAppBar() {
     return AppBar(
+      backgroundColor: Colors.blueGrey.shade600,
+      centerTitle: true,
       title: Text(
-        'Home',
-        style: TextStyle(color: Colors.grey[600]),
+        'HomePage',
+        style: TextStyle(color: Colors.white),
       ),
       actions: <Widget>[
         IconButton(
@@ -108,54 +117,56 @@ class _DashboardHomeState extends State<DashboardHome> {
           icon: Icon(Icons.search),
           onPressed: () {},
         ),
-        IconButton(
-          padding: EdgeInsets.zero,
-          icon: Icon(Icons.more_vert),
-          onPressed: () {},
-        ),
+       
       ],
     );
   }
 
   Widget buildDrawer([double elevation = 15.0]) {
-    return Drawer(
-      elevation: elevation,
-      child: Container(
-        color: Colors.blueGrey.shade700,
-        child: SingleChildScrollView(
-          child: Column(
-            
-            
-            children: <Widget>[
-              Center(
-                child: Container(
-                  height: 100,
-                  
-                   decoration: BoxDecoration(color: Colors.blueGrey.shade900),
-                  child: Center(
-                    child: CircleAvatar(
-                      radius: 35.0,
-                        backgroundImage: NetworkImage(
-                            'https://i.pinimg.com/474x/a8/6e/26/a86e26dffbcd0f8ffd0b7a6a4809ec68.jpg')),
+    return Container(
+      width: 265,
+      child: Drawer(
+        
+        elevation: elevation,
+        child: Container(
+          color: Colors.blueGrey.shade700,
+          child: SingleChildScrollView(
+            child: Column(
+              
+              
+              children: <Widget>[
+                Center(
+                  child: Container(
+                    height: 130,
+                    
+                     decoration: BoxDecoration(color:
+                      Colors.blueGrey.shade900
+                      ),
+                    child: Center(
+                      child: CircleAvatar(
+                        radius: 35.0,
+                          backgroundImage: NetworkImage(
+                              'https://i.pinimg.com/474x/a8/6e/26/a86e26dffbcd0f8ffd0b7a6a4809ec68.jpg')),
+                    ),
+                   
+                    
                   ),
-                 
-                  
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Text("my Username", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-              ),
-              buildListTile(0, Icons.home, 'Home'),
-              buildListTile(1, Icons.inbox, 'Inbox'),
-              buildListTile(2, Icons.delete, 'Trash'),
-              buildListTile(3, Icons.info, 'Spam'),
-              buildListTile(4, Icons.chat, 'Forums'),
-              buildListTile(5, Icons.flag, 'Updates'),
-              buildListTile(6, Icons.label, 'Promos'),
-              buildListTile(7, Icons.shopping_cart, 'Purchases'),
-              buildListTile(8, Icons.people, 'Social'),
-            ],
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text("Gerson Morales", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                ),
+                buildListTile(0, Icons.home, 'Home'),
+                buildListTile(1, Icons.inbox, 'Inbox'),
+                buildListTile(2, Icons.delete, 'Trash'),
+                buildListTile(3, Icons.info, 'Spam'),
+                buildListTile(4, Icons.chat, 'Forums'),
+                buildListTile(5, Icons.flag, 'Updates'),
+                buildListTile(6, Icons.label, 'Promos'),
+                buildListTile(7, Icons.shopping_cart, 'Purchases'),
+                buildListTile(8, Icons.people, 'Social'),
+              ],
+            ),
           ),
         ),
       ),
