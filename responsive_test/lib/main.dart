@@ -63,6 +63,7 @@ class _DashboardHomeState extends State<DashboardHome> {
     double elevation = 10;
   
     return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
       child: Wrap(
         alignment: WrapAlignment.start,
         crossAxisAlignment: WrapCrossAlignment.start,
@@ -97,6 +98,33 @@ class _DashboardHomeState extends State<DashboardHome> {
               
             ),
           ),
+          Card(
+            elevation: elevation,
+            child: Container(
+               decoration: BoxDecoration(
+                  border: Border.all(
+            color: Colors.black38,
+            width: 2.0,
+          ),
+
+                   boxShadow: [
+            BoxShadow(
+              //si 1 es solido por eso usamos 15
+              blurRadius: 15,
+              spreadRadius: 3,
+
+              color: Colors.white10,
+            ),
+          ],),
+                 //color: Colors.indigo,
+       
+              
+              height: 60.0,
+              //take all X space
+             // width: double.infinity,
+            ),
+          ),
+         
           
         ],
       ),
