@@ -8,16 +8,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Responsive Demo',
-      
-      
       home: DashboardHome(),
     );
   }
 }
 
-
 const kDesktopBreakpoint = 1024.0;
-
 
 class DashboardHome extends StatefulWidget {
   @override
@@ -32,20 +28,18 @@ class _DashboardHomeState extends State<DashboardHome> {
     return LayoutBuilder(
       builder: (_, dimens) => Scaffold(
         drawer: dimens.maxWidth < kDesktopBreakpoint ? buildDrawer() : null,
-        appBar:  buildDeskAppBar(),
+        appBar: buildDeskAppBar(),
         body: Row(
           children: <Widget>[
             if (dimens.maxWidth >= kDesktopBreakpoint) buildDrawer(0),
             Expanded(
                 child: Column(
               children: <Widget>[
-                
                 Expanded(
                   child: Container(
                     child: Center(
                       child: Container(
                         alignment: Alignment.topCenter,
-                        
                         child: buildBody(dimens.maxWidth),
                       ),
                     ),
@@ -61,76 +55,76 @@ class _DashboardHomeState extends State<DashboardHome> {
 
   Widget buildBody(double width) {
     double elevation = 10;
-  
-    return NotificationListener<OverscrollIndicatorNotification>(
-  onNotification: (OverscrollIndicatorNotification overscroll) {
-    overscroll.disallowGlow();
-    return false;
-  },
-          child: SingleChildScrollView(
-        //physics: BouncingScrollPhysics(),
-        child: Wrap(
-          alignment: WrapAlignment.start,
-          crossAxisAlignment: WrapCrossAlignment.start,
-          runSpacing: 13,
-          spacing: 13,
-          children: <Widget>[
-            Card(
-              elevation: elevation,
-              child: Container(
-                color: Colors.indigo,
-                height: 250.0,
-                //take all X space
-               // width: double.infinity,
-              ),
-            ),
-           
-            Card(
-                elevation: elevation,
-                child: Container(
-                  color: Colors.pink,
-                  height: 300,
-                  width: 362,
+
+    return Scrollbar(
+      
+      child: NotificationListener<OverscrollIndicatorNotification>(
+        onNotification: (OverscrollIndicatorNotification overscroll) {
+          overscroll.disallowGlow();
+          return false;
+        },
+        child: ListView(
+          children: [
+            Wrap(
+              //start
+              alignment: WrapAlignment.start,
+              crossAxisAlignment: WrapCrossAlignment.start,
+              runSpacing: 13,
+              spacing: 13,
+
+              children: <Widget>[
+                Card(
+                  elevation: elevation,
+                  child: Container(
+                    color: Colors.indigo,
+                    height: 250.0,
+                    //take all X space
+                    // width: double.infinity,
+                  ),
                 ),
-              ),
-
-               Card(
-              elevation: elevation,
-              child: Container(
-                color: Colors.purple,
-                width: 362,
-                height: 300,
-                
-              ),
+                Card(
+                  elevation: elevation,
+                  child: Container(
+                    color: Colors.pink,
+                    height: 300,
+                    width: 362,
+                  ),
+                ),
+                Card(
+                  elevation: elevation,
+                  child: Container(
+                    color: Colors.purple,
+                    width: 362,
+                    height: 300,
+                  ),
+                ),
+              ],
             ),
             Card(
               elevation: elevation,
               child: Container(
-                 decoration: BoxDecoration(
-                    border: Border.all(
-              color: Colors.black38,
-              width: 2.0,
-            ),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.black38,
+                    width: 2.0,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      //si 1 es solido por eso usamos 15
+                      blurRadius: 15,
+                      spreadRadius: 3,
 
-                     boxShadow: [
-              BoxShadow(
-                //si 1 es solido por eso usamos 15
-                blurRadius: 15,
-                spreadRadius: 3,
+                      color: Colors.white10,
+                    ),
+                  ],
+                ),
+                //color: Colors.indigo,
 
-                color: Colors.white10,
-              ),
-            ],),
-                   //color: Colors.indigo,
-         
-                
                 height: 60.0,
                 //take all X space
-               // width: double.infinity,
+                // width: double.infinity,
               ),
             ),
-           
-            
           ],
         ),
       ),
@@ -151,7 +145,6 @@ class _DashboardHomeState extends State<DashboardHome> {
           icon: Icon(Icons.search),
           onPressed: () {},
         ),
-       
       ],
     );
   }
@@ -160,37 +153,33 @@ class _DashboardHomeState extends State<DashboardHome> {
     return Container(
       width: 265,
       child: Drawer(
-        
         elevation: elevation,
         child: Container(
           color: Colors.blueGrey.shade700,
-          
           child: Scrollbar(
-                      child: SingleChildScrollView(
+            child: SingleChildScrollView(
               child: Column(
-                
-                
                 children: <Widget>[
                   Center(
                     child: Container(
                       height: 130,
-                      
-                       decoration: BoxDecoration(color:
-                        Colors.blueGrey.shade900
-                        ),
+                      decoration:
+                          BoxDecoration(color: Colors.blueGrey.shade900),
                       child: Center(
                         child: CircleAvatar(
-                          radius: 35.0,
+                            radius: 35.0,
                             backgroundImage: NetworkImage(
                                 'https://i.pinimg.com/474x/a8/6e/26/a86e26dffbcd0f8ffd0b7a6a4809ec68.jpg')),
                       ),
-                     
-                      
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: Text("Gerson Morales", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                    child: Text(
+                      "Gerson Morales",
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
                   ),
                   buildListTile(0, Icons.home, 'Home'),
                   buildListTile(1, Icons.inbox, 'Inbox'),
