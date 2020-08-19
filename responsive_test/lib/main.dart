@@ -31,33 +31,27 @@ class _DashboardHomeState extends State<DashboardHome> {
         appBar: buildDeskAppBar(),
         body: Row(
           children: <Widget>[
-            if (dimens.maxWidth >= kDesktopBreakpoint) buildDrawer(0),
+            if (dimens.maxWidth >= kDesktopBreakpoint) buildDrawer(),
             Expanded(
-                child: Column(
-              children: <Widget>[
-                Expanded(
-                  child: Container(
-                    child: Center(
-                      child: Container(
-                        alignment: Alignment.topCenter,
-                        child: buildBody(dimens.maxWidth),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            )),
+              child: Container(
+                alignment: Alignment.topCenter,
+                child: buildBody(dimens.maxWidth, dimens.maxHeight),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget buildBody(double width) {
+  Widget buildBody(double width, height) {
     double elevation = 10;
 
+    print(height);
+    double customSpacer =
+        (height > 960) ? (height - (250 + 300 + 60 + 100)) : 20;
+
     return Scrollbar(
-      
       child: NotificationListener<OverscrollIndicatorNotification>(
         onNotification: (OverscrollIndicatorNotification overscroll) {
           overscroll.disallowGlow();
@@ -100,31 +94,10 @@ class _DashboardHomeState extends State<DashboardHome> {
                 ),
               ],
             ),
-            Card(
-              elevation: elevation,
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.black38,
-                    width: 2.0,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      //si 1 es solido por eso usamos 15
-                      blurRadius: 15,
-                      spreadRadius: 3,
-
-                      color: Colors.white10,
-                    ),
-                  ],
-                ),
-                //color: Colors.indigo,
-
-                height: 60.0,
-                //take all X space
-                // width: double.infinity,
-              ),
+            Container(
+              height: customSpacer,
             ),
+            crearFooter(),
           ],
         ),
       ),
@@ -133,7 +106,8 @@ class _DashboardHomeState extends State<DashboardHome> {
 
   AppBar buildDeskAppBar() {
     return AppBar(
-      backgroundColor: Colors.blueGrey.shade600,
+      // backgroundColor: Colors.blueGrey.shade600,
+      backgroundColor: Colors.blueAccent,
       centerTitle: true,
       title: Text(
         'HomePage',
@@ -155,7 +129,8 @@ class _DashboardHomeState extends State<DashboardHome> {
       child: Drawer(
         elevation: elevation,
         child: Container(
-          color: Colors.blueGrey.shade700,
+          color: Colors.blueAccent,
+          // Colors.blueGrey.shade700,
           child: Scrollbar(
             child: SingleChildScrollView(
               child: Column(
@@ -163,8 +138,9 @@ class _DashboardHomeState extends State<DashboardHome> {
                   Center(
                     child: Container(
                       height: 130,
-                      decoration:
-                          BoxDecoration(color: Colors.blueGrey.shade900),
+                      decoration: BoxDecoration(
+                          color: //Colors.blueGrey.shade900
+                              Colors.blueAccent[700]),
                       child: Center(
                         child: CircleAvatar(
                             radius: 35.0,
@@ -202,9 +178,10 @@ class _DashboardHomeState extends State<DashboardHome> {
   Widget buildListTile(int index, IconData iconData, String name) {
     final isHovered = index == _hoveredIndex;
     final iconColor =
-        isHovered ? Colors.grey.shade600 : Colors.blueGrey.shade300;
-    final textColor =
-        isHovered ? Colors.grey.shade800 : Colors.blueGrey.shade200;
+        // isHovered ? Colors.grey.shade600 : Colors.blueGrey.shade300;
+        isHovered ? Colors.blueAccent : Colors.blueAccent[700];
+    final textColor = isHovered ? Colors.white10 : Colors.white;
+    //Colors.grey.shade800 : Colors.blueGrey.shade200;
     return MouseRegion(
       onEnter: (_) => _setHoverIndex(index),
       onExit: (_) => _setHoverIndex(null),
@@ -229,5 +206,33 @@ class _DashboardHomeState extends State<DashboardHome> {
       setState(() {
         _hoveredIndex = index;
       });
+  }
+
+  crearFooter() {
+    return Card(
+      elevation: 15.0,
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.black38,
+            width: 2.0,
+          ),
+          boxShadow: [
+            BoxShadow(
+              //si 1 es solido por eso usamos 15
+              blurRadius: 15,
+              spreadRadius: 3,
+
+              color: Colors.white10,
+            ),
+          ],
+        ),
+        //color: Colors.indigo,
+
+        height: 60.0,
+        //take all X space
+        // width: double.infinity,
+      ),
+    );
   }
 }
