@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
+const kDesktopBreakpoint = 1024.0;
+bool largeScreen;
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -13,25 +16,25 @@ class MyApp extends StatelessWidget {
   }
 }
 
-const kDesktopBreakpoint = 1024.0;
-
 class DashboardHome extends StatefulWidget {
   @override
   _DashboardHomeState createState() => _DashboardHomeState();
 }
 
 class _DashboardHomeState extends State<DashboardHome> {
-  int _hoveredIndex;
-
   @override
   Widget build(BuildContext context) {
+    largeScreen = (MediaQuery.of(context).size.width >= kDesktopBreakpoint)
+        ? true
+        : false;
     return LayoutBuilder(
-      builder: (_, dimens) => Scaffold(
-        drawer: dimens.maxWidth < kDesktopBreakpoint ? buildDrawer() : null,
+      builder: (context, dimens) => Scaffold(
+        //drawe es el que se oculta
+        drawer: !largeScreen ? buildDrawer() : null,
         appBar: buildDeskAppBar(),
         body: Row(
           children: <Widget>[
-            if (dimens.maxWidth >= kDesktopBreakpoint) buildDrawer(),
+            if (largeScreen) buildDrawer(),
             Expanded(
               child: Container(
                 alignment: Alignment.topCenter,
@@ -61,7 +64,11 @@ class _DashboardHomeState extends State<DashboardHome> {
           children: [
             Wrap(
               //start
-              alignment: WrapAlignment.start,
+              //horizonral aligment WrapAlignment.spaceAround,
+              alignment: (largeScreen)
+                  ? WrapAlignment.start
+                  : WrapAlignment.spaceAround,
+              //vertical aligment
               crossAxisAlignment: WrapCrossAlignment.start,
               runSpacing: 13,
               spacing: 13,
@@ -123,7 +130,8 @@ class _DashboardHomeState extends State<DashboardHome> {
     );
   }
 
-  Widget buildDrawer([double elevation = 15.0]) {
+  Widget buildDrawer() {
+    double elevation = 15.0;
     return Container(
       width: 265,
       child: Drawer(
@@ -176,36 +184,31 @@ class _DashboardHomeState extends State<DashboardHome> {
   }
 
   Widget buildListTile(int index, IconData iconData, String name) {
-    final isHovered = index == _hoveredIndex;
-    final iconColor =
-        // isHovered ? Colors.grey.shade600 : Colors.blueGrey.shade300;
-        isHovered ? Colors.blueAccent : Colors.blueAccent[700];
-    final textColor = isHovered ? Colors.white10 : Colors.white;
-    //Colors.grey.shade800 : Colors.blueGrey.shade200;
-    return MouseRegion(
-      onEnter: (_) => _setHoverIndex(index),
-      onExit: (_) => _setHoverIndex(null),
-      child: Container(
-        color: isHovered ? Color(0xFF4BA1B5) : null,
-        child: ListTile(
-          leading: Icon(iconData, color: iconColor),
-          title: Text(
-            name,
-            style: TextStyle(color: textColor),
-          ),
-          onTap: () {
+    Color textColor = Colors.white;
+    Color iconColor = Colors.blue[900];
+    return Container(
+      child: ListTile(
+        title: FlatButton(
+          hoverColor: Colors.blueAccent[700],
+          onPressed: () {
+            //set index
             Navigator.maybePop(context);
           },
+          child: Row(
+            children: [
+              Icon(iconData, color: iconColor),
+              SizedBox(
+                width: 20.0,
+              ),
+              Text(
+                name,
+                style: TextStyle(color: textColor),
+              ),
+            ],
+          ),
         ),
       ),
     );
-  }
-
-  void _setHoverIndex(int index) {
-    if (mounted)
-      setState(() {
-        _hoveredIndex = index;
-      });
   }
 
   crearFooter() {
@@ -236,3 +239,31 @@ class _DashboardHomeState extends State<DashboardHome> {
     );
   }
 }
+
+/*
+ Widget buildListTile(int index, IconData iconData, String name) {
+    final isHovered = index == _hoveredIndex;
+    final iconColor =
+        // isHovered ? Colors.grey.shade600 : Colors.blueGrey.shade300;
+        isHovered ? Colors.blueAccent : Colors.blueAccent[700];
+    final textColor = isHovered ? Colors.white10 : Colors.white;
+    //Colors.grey.shade800 : Colors.blueGrey.shade200;
+    return MouseRegion(
+      onEnter: (_) => _setHoverIndex(index),
+      onExit: (_) => _setHoverIndex(null),
+      child: Container(
+        color: isHovered ? Color(0xFF4BA1B5) : null,
+        child: ListTile(
+          leading: Icon(iconData, color: iconColor),
+          title: Text(
+            name,
+            style: TextStyle(color: textColor),
+          ),
+          onTap: () {
+            Navigator.maybePop(context);
+          },
+        ),
+      ),
+    );
+  }
+*/
